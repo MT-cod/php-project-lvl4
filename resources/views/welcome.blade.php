@@ -128,5 +128,6 @@
                 </div>
             </div>
         </div>
+        @php \Log::debug('Test debug message'); @endphp
     </body>
 </html>

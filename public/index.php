@@ -3,6 +3,8 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+//\Log::debug('Test debug message');
+
 define('LARAVEL_START', microtime(true));
 
 /*

@@ -1,4 +1,5 @@
 {
+    "name":"mt-cod-php-project-lvl4",
     "private": true,
     "scripts": {
         "dev": "npm run development",

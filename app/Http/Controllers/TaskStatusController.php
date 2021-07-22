@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaskStatuses;
+use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 
-class TaskStatusesController extends Controller
+class TaskStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class TaskStatusesController extends Controller
      */
     public function index()
     {
-        $statuses = TaskStatuses::paginate();
+        $statuses = TaskStatus::paginate();
         return view('task_statuses.index', compact('statuses'));
     }
 
@@ -25,7 +25,7 @@ class TaskStatusesController extends Controller
      */
     public function create()
     {
-        $article = new TaskStatuses();
+        $article = new TaskStatus();
         return view('article.create', compact('article'));
     }
 
@@ -43,10 +43,10 @@ class TaskStatusesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TaskStatuses  $taskStatuses
+     * @param  \App\Models\TaskStatus  $taskStatuses
      * @return \Illuminate\Http\Response
      */
-    public function show(TaskStatuses $taskStatuses)
+    public function show(TaskStatus $taskStatuses)
     {
         //
     }
@@ -54,10 +54,10 @@ class TaskStatusesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TaskStatuses  $taskStatuses
+     * @param  \App\Models\TaskStatus  $taskStatuses
      * @return \Illuminate\Http\Response
      */
-    public function edit(TaskStatuses $taskStatuses)
+    public function edit(TaskStatus $taskStatuses)
     {
         //
     }
@@ -66,10 +66,10 @@ class TaskStatusesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaskStatuses  $taskStatuses
+     * @param  \App\Models\TaskStatus  $taskStatuses
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TaskStatuses $taskStatuses)
+    public function update(Request $request, TaskStatus $taskStatuses)
     {
         //
     }
@@ -77,10 +77,10 @@ class TaskStatusesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TaskStatuses  $taskStatuses
+     * @param  \App\Models\TaskStatus  $taskStatuses
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TaskStatuses $taskStatuses)
+    public function destroy(TaskStatus $taskStatuses)
     {
         //
     }

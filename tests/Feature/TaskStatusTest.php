@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\TaskStatuses;
+use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class TaskStatusesTest extends TestCase
+class TaskStatusTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,7 +23,7 @@ class TaskStatusesTest extends TestCase
     public function testIndex(): void
     {
         //var_dump(config('database.default'));
-        //var_dump(TaskStatuses::all()->toArray());
+        //var_dump(TaskStatus::all()->toArray());
         $response = $this->get('/task_statuses');
         $response->assertOk();
         $this->assertDatabaseHas('task_statuses', ['name' => 'на тестировании']);

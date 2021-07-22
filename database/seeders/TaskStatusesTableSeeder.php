@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\TaskStatuses;
+use App\Models\TaskStatus;
 
 class TaskStatusesTableSeeder extends Seeder
 {
@@ -14,9 +14,9 @@ class TaskStatusesTableSeeder extends Seeder
      */
     public function run()
     {
-        TaskStatuses::create([ 'name' => 'новый']);
-        TaskStatuses::create([ 'name' => 'в работе']);
-        TaskStatuses::create([ 'name' => 'на тестировании']);
-        TaskStatuses::create([ 'name' => 'завершен']);
+        TaskStatus::create([ 'name' => 'новый']);
+        TaskStatus::create([ 'name' => 'в работе']);
+        TaskStatus::create([ 'name' => 'на тестировании']);
+        TaskStatus::create([ 'name' => 'завершен']);
     }
 }

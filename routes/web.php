@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TaskStatusesController;
+use App\Http\Controllers\TaskStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +24,4 @@ Auth::routes();
 
 //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource('task_statuses', TaskStatusesController::class);
+Route::resource('task_statuses', TaskStatusController::class);

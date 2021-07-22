@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
@@ -21,23 +22,29 @@ class TaskStatusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        $article = new TaskStatus();
-        return view('article.create', compact('article'));
+        $status = new TaskStatus();
+        return view('task_statuses.create', compact('status'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
+        $status = new TaskStatus();
+        $status->fill($data);
+        // При ошибках сохранения возникнет исключение
+        $status->save();
+        return redirect()->route('task_statuses.index');
     }
 
     /**

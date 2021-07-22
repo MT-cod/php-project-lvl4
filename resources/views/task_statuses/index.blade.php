@@ -5,6 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h1 class="display-10">Статусы</h1>
+
+            @guest
+            @else
+                <a href="/task_statuses/create" class="btn btn-primary">Создать статус</a>
+                <br><br>
+            @endguest
+
             <table class="table table-success table-striped table-sm">
                 <thead>
                 <tr>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\TaskStatuses;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,14 +17,16 @@ class TaskStatusesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate');
-        Artisan::call('db:seed');
+        Artisan::call('db:seed TaskStatusesTableSeeder');
     }
 
     public function testIndex(): void
     {
+        //var_dump(config('database.default'));
+        //var_dump(TaskStatuses::all()->toArray());
         $response = $this->get('/task_statuses');
         $response->assertOk();
+        $this->assertDatabaseHas('task_statuses', ['name' => 'на тестировании']);
         $response->assertSeeTextInOrder(
             ['новый', 'в работе', 'на тестировании', 'завершен'],
             true

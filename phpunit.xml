@@ -33,4 +33,7 @@
             <directory suffix=".php">app/Http/Controllers</directory>
         </include>
     </coverage>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
 </phpunit>

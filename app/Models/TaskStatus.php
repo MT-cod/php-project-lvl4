@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TaskStatus extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name'];
 }

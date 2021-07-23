@@ -22,8 +22,6 @@ class TaskStatusTest extends TestCase
 
     public function testIndex(): void
     {
-        //var_dump(config('database.default'));
-        //var_dump(TaskStatus::all()->toArray());
         $response = $this->get('/task_statuses');
         $response->assertOk();
         $this->assertDatabaseHas('task_statuses', ['name' => 'на тестировании']);
@@ -32,12 +30,20 @@ class TaskStatusTest extends TestCase
             true
         );
     }
-    /*public function testAddUrl(): void
+    public function testCreate(): void
     {
-        $response = $this->post(route('urls.create'), ['url' => ['name' => 'http://example.com']]);
-        $this->assertDatabaseHas('urls', ['name' => 'http://example.com']);
-        $response->assertStatus(302);
-    }*/
+        $response = $this->get('/task_statuses/create');
+        $response->assertOk();
+        $response->assertSeeTextInOrder(
+            ['Создать статус', 'Имя', 'Создать'],
+            true
+        );
+    }
+    public function testStore(): void
+    {
+        $response = $this->post(route('task_statuses.store'), ['name' => 'testStatus']);
+        $this->assertDatabaseHas('task_statuses', ['name' => 'testStatus']);
+    }
 /*    public function testShowUrls(): void
     {
         $this->post(route('urls.create'), ['url' => ['name' => 'http://example.com']]);

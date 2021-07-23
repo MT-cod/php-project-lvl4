@@ -28,9 +28,12 @@
                         <td>{{$status->created_at}}</td>
                     </tr>
             @endforeach
+
                     </tbody>
                 </table>
-
+            <div class="d-flex justify-content-center">
+            {{ $statuses->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="display-10">Менеджер задач</h1>
+            <h3 class="display-10">Менеджер задач приветствует Вас!</h3>
         </div>
     </div>
 </div>

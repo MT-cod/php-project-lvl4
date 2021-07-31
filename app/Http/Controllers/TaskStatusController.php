@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TaskStatusController extends Controller
 {
@@ -43,7 +44,11 @@ class TaskStatusController extends Controller
         $status = new TaskStatus();
         $status->fill($data);
         // При ошибках сохранения возникнет исключение
-        $status->save();
+        if ($status->save()) {
+            flash('Статус успешно создан')->success();
+        } else {
+            flash('Ошибка создания статуса')->error();
+        }
         return redirect()->route('task_statuses.index');
     }
 
@@ -84,11 +89,16 @@ class TaskStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TaskStatus  $taskStatuses
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(TaskStatus $taskStatuses)
+    public function destroy(int $id)
     {
-        //
+        $taskStatus = TaskStatus::find($id);
+        if ($taskStatus?->delete()) {
+            flash('Статус успешно удалён')->success();
+        } else {
+            flash('Не удалось удалить статус')->error();
+        }
+        return redirect()->route('task_statuses.index');
     }
 }

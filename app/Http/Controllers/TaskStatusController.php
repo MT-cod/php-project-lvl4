@@ -16,7 +16,7 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
-        $statuses = TaskStatus::paginate(10);
+        $statuses = TaskStatus::orderBy('id')->paginate(10);
         return view('task_statuses.index', compact('statuses'));
     }
 
@@ -53,37 +53,33 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TaskStatus  $taskStatuses
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TaskStatus $taskStatuses)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TaskStatus  $taskStatuses
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(TaskStatus $taskStatuses)
+    public function edit(int $id)
     {
-        //
+        $status = TaskStatus::find($id);
+        return view('task_statuses.edit', compact('status'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaskStatus  $taskStatuses
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, TaskStatus $taskStatuses)
+    public function update(Request $request, int $id)
     {
-        //
+        $taskStatus = TaskStatus::findOrFail($id);
+        $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
+        $taskStatus->fill($data);
+        if ($taskStatus->save()) {
+            flash('Статус успешно изменён')->success();
+        } else {
+            flash('Ошибка изменения статуса')->error();
+        }
+        return redirect()->route('task_statuses.index');
     }
 
     /**
@@ -93,7 +89,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(int $id)
     {
-        $taskStatus = TaskStatus::find($id);
+        $taskStatus = TaskStatus::findOrFail($id);
         if ($taskStatus?->delete()) {
             flash('Статус успешно удалён')->success();
         } else {

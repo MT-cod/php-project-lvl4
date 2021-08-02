@@ -47,7 +47,7 @@
                         @guest
                         @else
                         <td>
-                            <a href="{{ route('task_statuses.edit', $status) }}">Изменить</a>
+                            <a href="{{ route('task_statuses.edit', $status->id) }}">Изменить</a>
                             <form action="/task_statuses/{{ $status->id }}" method="POST">
                                 @csrf
                                 @method('DELETE')

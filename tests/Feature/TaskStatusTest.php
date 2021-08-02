@@ -20,7 +20,6 @@ class TaskStatusTest extends TestCase
         $faker = \Faker\Factory::create();
         $this->testStatusName = $faker->word();
         var_dump($this->testStatusName);
-        $this->post(route('task_statuses.store'), ['name' => $this->testStatusName]);
     }
 
     public function testIndex(): void
@@ -44,7 +43,10 @@ class TaskStatusTest extends TestCase
     }
     public function testStore(): void
     {
+        $this->post(route('task_statuses.store'), ['name' => $this->testStatusName]);
         $this->assertDatabaseHas('task_statuses', ['name' => $this->testStatusName]);
+        $response = $this->get('/task_statuses');
+        $response->assertSeeTextInOrder(['Статус успешно создан'], true);
     }
     public function testEdit(): void
     {
@@ -57,16 +59,21 @@ class TaskStatusTest extends TestCase
     }
     public function testUpdate(): void
     {
-        $this->post(route('task_statuses.update', 1), ['_method' => 'PATCH', 'name' => 'test']);
-        $this->assertDatabaseHas('task_statuses', ['name' => 'test']);
+        $this->post(route('task_statuses.update', 1), ['_method' => 'PATCH', 'name' => $this->testStatusName]);
+        $this->assertDatabaseHas('task_statuses', ['name' => $this->testStatusName]);
+        $response = $this->get('/task_statuses');
+        $response->assertSeeTextInOrder(['Статус успешно изменён'], true);
     }
     public function testDestroy(): void
     {
+        $this->post(route('task_statuses.store'), ['name' => $this->testStatusName]);
         $this->assertDatabaseHas('task_statuses', ['name' => $this->testStatusName]);
         $status = TaskStatus::firstWhere('name', $this->testStatusName);
         $this->post(route('task_statuses.destroy', $status->id), ['_method' => 'DELETE']);
         $this->assertDeleted($status);
         $this->assertDatabaseMissing('task_statuses', ['name' => $this->testStatusName]);
+        $response = $this->get('/task_statuses');
+        $response->assertSeeTextInOrder(['Статус успешно удалён'], true);
     }
 
     protected function tearDown(): void

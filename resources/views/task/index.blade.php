@@ -6,23 +6,12 @@
         <div class="col-md-8">
 
             @include('flash::message')
-            {{--@if(Session::has('message'))
-                @foreach ($messages->all() as $message)
-                    <div style="background-color: #7fe2b4">{{ $message }}</div>
-                @endforeach
-            @elseif ($errors->any())
-                @foreach ($errors->all() as $error)
-                    <div style="background-color: #ff885a">{{ $error }}</div>
-                @endforeach
-            @else
-                <br>
-            @endif--}}
 
-            <h1 class="display-10">Статусы</h1>
+            <h1 class="display-10">Задачи</h1>
 
             @guest
             @else
-                <a href="/task_statuses/create" class="btn btn-primary">Создать статус</a>
+                <a href="/tasks/create" class="btn btn-primary">Создать задачу</a>
                 <br><br>
             @endguest
 
@@ -30,7 +19,10 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">Статус</th>
                     <th scope="col">Имя</th>
+                    <th scope="col">Автор</th>
+                    <th scope="col">Исполнитель</th>
                     <th scope="col">Дата создания</th>
                     @guest
                     @else
@@ -39,19 +31,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($statuses as $status)
+                @foreach ($tasks as $task)
                     <tr>
-                        <td>{{ $status->id }}</td>
-                        <td>{{ Str::limit($status->name, 200) }}</td>
-                        <td>{{ $status->created_at }}</td>
+                        <td>{{ $task->id }}</td>
+                        <td>{{ Str::limit($task->status_name, 20) }}</td>
+                        <td>{{ Str::limit($task->name, 200) }}</td>
+                        <td>{{ $task->created_by_id }}</td>
+                        <td>{{ $task->assigned_to_id }}</td>
+                        <td>{{ $task->created_at }}</td>
                         @guest
                         @else
                         <td>
-                            <a href="{{ route('task_statuses.edit', $status->id) }}">Изменить</a>
-                            <form action="/task_statuses/{{ $status->id }}" method="POST">
+                            <a href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
+                            <form action="/tasks/{{ $task->id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <input type="hidden" value="{{ $status->id }}" name="id">
+                                <input type="hidden" value="{{ $task->id }}" name="id">
                                 <button type="submit">Удалить</button>
                             </form>
                         </td>
@@ -61,7 +56,7 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-center">
-                {{ $statuses->links('pagination::bootstrap-4') }}
+                {{ $tasks->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class TaskStatusController extends Controller
+class TaskStatusesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        $statuses = TaskStatus::orderBy('id')->paginate(10);
-        return view('task_statuses.index', compact('statuses'));
+        $taskStatuses = TaskStatus::orderBy('id')->paginate(10);
+        return view('task_status.index', compact('taskStatuses'));
     }
 
     /**
@@ -27,8 +25,8 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $status = new TaskStatus();
-        return view('task_statuses.create', compact('status'));
+        $taskStatus = new TaskStatus();
+        return view('task_status.create', compact('taskStatus'));
     }
 
     /**
@@ -59,8 +57,8 @@ class TaskStatusController extends Controller
      */
     public function edit(int $id)
     {
-        $status = TaskStatus::find($id);
-        return view('task_statuses.edit', compact('status'));
+        $taskStatus = TaskStatus::find($id);
+        return view('task_status.edit', compact('taskStatus'));
     }
 
     /**

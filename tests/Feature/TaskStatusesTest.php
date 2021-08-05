@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
-class TaskStatusTest extends TestCase
+class TaskStatusesTest extends TestCase
 {
     use RefreshDatabase;
 

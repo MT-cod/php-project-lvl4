@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Изменение статуса') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('task_statuses.update', $status->id) }}">
+                        <form method="POST" action="{{ route('task_status.update', $status->id) }}">
                             @csrf
                             @method('PATCH')
 

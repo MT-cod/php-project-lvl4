@@ -17,11 +17,14 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //$task = Task::orderBy('id')->paginate(10);
         $tasks = Task::addSelect(['status_name' => TaskStatus::select('name')
-            ->whereColumn('status_id', 'tasks.id')
-            ->orderByDesc('id')
-        ])->paginate(10);
+            ->whereColumn('id', 'tasks.status_id')
+        ])->addSelect(['creator_name' => User::select('name')
+            ->whereColumn('id', 'tasks.created_by_id')
+        ])->addSelect(['executor_name' => User::select('name')
+            ->whereColumn('id', 'tasks.assigned_to_id')
+        ])->orderByDesc('id')
+            ->paginate(10);
         return view('task.index', compact('tasks'));
     }
 
@@ -63,12 +66,12 @@ class TasksController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $tasks
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(TasksController $tasks)
+    public function show(int $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        return view('task.show', compact('task'));
     }
 
     /**

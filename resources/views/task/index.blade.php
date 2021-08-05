@@ -35,20 +35,14 @@
                     <tr>
                         <td>{{ $task->id }}</td>
                         <td>{{ Str::limit($task->status_name, 20) }}</td>
-                        <td>{{ Str::limit($task->name, 200) }}</td>
-                        <td>{{ $task->created_by_id }}</td>
-                        <td>{{ $task->assigned_to_id }}</td>
+                        <td><a href="{{ route('tasks.show', $task->id) }}">{{ Str::limit($task->name, 200) }}</a></td>
+                        <td>{{ $task->creator_name }}</td>
+                        <td>{{ $task->executor_name }}</td>
                         <td>{{ $task->created_at }}</td>
                         @guest
                         @else
                         <td>
                             <a href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
-                            <form action="/tasks/{{ $task->id }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" value="{{ $task->id }}" name="id">
-                                <button type="submit">Удалить</button>
-                            </form>
                         </td>
                         @endguest
                     </tr>

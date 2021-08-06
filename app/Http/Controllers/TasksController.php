@@ -37,6 +37,7 @@ class TasksController extends Controller
     public function create()
     {
         $task = new Task();
+        $this->authorize('create', $task);
         $taskStatuses = TaskStatus::orderBy('name')->get();
         $users = User::orderBy('name')->get();
         return view('task.create', compact('task', 'taskStatuses', 'users'));
@@ -50,11 +51,12 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $task = new Task();
+        $this->authorize('create', $task);
         $data = $this->validate($request, ['name' => 'required|unique:tasks', 'status_id' => 'required']);
         $data['description'] = $request->input('description', '');
         $data['created_by_id'] = Auth::id();
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? Auth::id();
-        $task = new Task();
         $task->fill($data);
         if ($task->save()) {
             flash('Задача успешно создана')->success();
@@ -79,16 +81,15 @@ class TasksController extends Controller
      * Show the form for editing the specified resource.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|no-return
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(int $id)
     {
-        if (Auth::check()) {
-            $task = Task::findOrFail($id);
-            $taskStatuses = TaskStatus::orderBy('name')->get();
-            $users = User::orderBy('name')->get();
-            return view('task.edit', compact('task', 'taskStatuses', 'users'));
-        }
-        abort(403, 'THIS ACTION IS UNAUTHORIZED.');
+        $task = Task::findOrFail($id);
+        $this->authorize('update', $task);
+        $taskStatuses = TaskStatus::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
+        return view('task.edit', compact('task', 'taskStatuses', 'users'));
     }
 
     /**
@@ -100,6 +101,7 @@ class TasksController extends Controller
     public function update(Request $request, int $id)
     {
         $task = Task::findOrFail($id);
+        $this->authorize('update', $task);
         $data = $this->validate($request, [
             'name' => [
                 'required',
@@ -114,6 +116,23 @@ class TasksController extends Controller
             flash('Задача успешно изменена')->success();
         } else {
             flash('Ошибка изменения задачи')->error();
+        }
+        return redirect()->route('tasks.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(int $id)
+    {
+        $task = Task::findOrFail($id);
+        $this->authorize('delete', $task);
+        if ($task?->delete()) {
+            flash('Задача успешно удалена')->success();
+        } else {
+            flash('Не удалось удалить задачу')->error();
         }
         return redirect()->route('tasks.index');
     }

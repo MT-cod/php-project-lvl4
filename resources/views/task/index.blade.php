@@ -43,6 +43,14 @@
                         @else
                         <td>
                             <a href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
+                            @can('delete', $task)
+                                <form action="/tasks/{{ $task->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" value="{{ $task->id }}" name="id">
+                                    <button type="submit">Удалить</button>
+                                </form>
+                            @endcan
                         </td>
                         @endguest
                     </tr>

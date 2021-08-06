@@ -42,7 +42,6 @@ class TaskStatusesController extends Controller
         $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
         $status = new TaskStatus();
         $status->fill($data);
-        // При ошибках сохранения возникнет исключение
         if ($status->save()) {
             flash('Статус успешно создан')->success();
         } else {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TaskStatusesController extends Controller
 {
@@ -57,7 +58,7 @@ class TaskStatusesController extends Controller
      */
     public function edit(int $id)
     {
-        $taskStatus = TaskStatus::find($id);
+        $taskStatus = TaskStatus::findOrFail($id);
         return view('task_status.edit', compact('taskStatus'));
     }
 
@@ -70,7 +71,10 @@ class TaskStatusesController extends Controller
     public function update(Request $request, int $id)
     {
         $taskStatus = TaskStatus::findOrFail($id);
-        $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
+        $data = $this->validate($request, ['name' => [
+            'required',
+            Rule::unique('task_statuses')->ignore($taskStatus->id)
+        ]]);
         $taskStatus->fill($data);
         if ($taskStatus->save()) {
             flash('Статус успешно изменён')->success();

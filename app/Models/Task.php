@@ -18,11 +18,11 @@ class Task extends Model
 
     public function creator()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'created_by_id');
     }
 
     public function executor()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'assigned_to_id');
     }
 }

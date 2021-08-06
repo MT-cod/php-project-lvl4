@@ -7,6 +7,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class TasksController extends Controller
 {
@@ -49,7 +50,7 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validate($request, ['name' => 'required', 'status_id' => 'required']);
+        $data = $this->validate($request, ['name' => 'required|unique:tasks', 'status_id' => 'required']);
         $data['description'] = $request->input('description', '');
         $data['created_by_id'] = Auth::id();
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? Auth::id();
@@ -77,34 +78,43 @@ class TasksController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $tasks
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|no-return
      */
-    public function edit(TasksController $tasks)
+    public function edit(int $id)
     {
-        //
+        if (Auth::check()) {
+            $task = Task::findOrFail($id);
+            $taskStatuses = TaskStatus::orderBy('name')->get();
+            $users = User::orderBy('name')->get();
+            return view('task.edit', compact('task', 'taskStatuses', 'users'));
+        }
+        abort(403, 'THIS ACTION IS UNAUTHORIZED.');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $tasks
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, TasksController $tasks)
+    public function update(Request $request, int $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Task  $tasks
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TasksController $tasks)
-    {
-        //
+        $task = Task::findOrFail($id);
+        $data = $this->validate($request, [
+            'name' => [
+                'required',
+                Rule::unique('tasks')->ignore($task->id)
+            ],
+            'status_id' => 'required'
+        ]);
+        $data['description'] = $request->input('description', '');
+        $data['assigned_to_id'] = $request->input('assigned_to_id') ?? $task->assigned_to_id;
+        $task->fill($data);
+        if ($task->save()) {
+            flash('Задача успешно изменена')->success();
+        } else {
+            flash('Ошибка изменения задачи')->error();
+        }
+        return redirect()->route('tasks.index');
     }
 }

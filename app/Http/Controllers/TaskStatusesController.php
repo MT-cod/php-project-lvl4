@@ -27,6 +27,7 @@ class TaskStatusesController extends Controller
     public function create()
     {
         $taskStatus = new TaskStatus();
+        $this->authorize('create', $taskStatus);
         return view('task_status.create', compact('taskStatus'));
     }
 
@@ -39,10 +40,11 @@ class TaskStatusesController extends Controller
      */
     public function store(Request $request)
     {
+        $taskStatus = new TaskStatus();
+        $this->authorize('create', $taskStatus);
         $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
-        $status = new TaskStatus();
-        $status->fill($data);
-        if ($status->save()) {
+        $taskStatus->fill($data);
+        if ($taskStatus->save()) {
             flash('Статус успешно создан')->success();
         } else {
             flash('Ошибка создания статуса')->error();
@@ -58,6 +60,7 @@ class TaskStatusesController extends Controller
     public function edit(int $id)
     {
         $taskStatus = TaskStatus::findOrFail($id);
+        $this->authorize('update', $taskStatus);
         return view('task_status.edit', compact('taskStatus'));
     }
 
@@ -70,6 +73,7 @@ class TaskStatusesController extends Controller
     public function update(Request $request, int $id)
     {
         $taskStatus = TaskStatus::findOrFail($id);
+        $this->authorize('update', $taskStatus);
         $data = $this->validate($request, ['name' => [
             'required',
             Rule::unique('task_statuses')->ignore($taskStatus->id)
@@ -91,6 +95,7 @@ class TaskStatusesController extends Controller
     public function destroy(int $id)
     {
         $taskStatus = TaskStatus::findOrFail($id);
+        $this->authorize('delete', $taskStatus);
         if ($taskStatus?->delete()) {
             flash('Статус успешно удалён')->success();
         } else {

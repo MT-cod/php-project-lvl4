@@ -14,7 +14,7 @@ class TaskStatusesTest extends TestCase
     use RefreshDatabase;
 
     private string $testStatusName;
-    private User $user;
+    private \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model $testUser;
 
     protected function setUp(): void
     {
@@ -22,13 +22,7 @@ class TaskStatusesTest extends TestCase
         Artisan::call('db:seed TaskStatusesTableSeeder');
         $faker = \Faker\Factory::create();
         $this->testStatusName = $faker->word();
-        //var_dump($this->testStatusName);
-        $this->user = new User([
-            'name' => $faker->word(),
-            'email' => $faker->email(),
-            'password' => $faker->password()
-        ]);
-        $this->user->save();
+        $this->testUser = User::factory()->create();
     }
 
     public function testIndex(): void
@@ -46,7 +40,6 @@ class TaskStatusesTest extends TestCase
         $response = $this->get('/task_statuses/create');
         $response->assertStatus(403);
         Auth::loginUsingId(1);
-        //var_dump(Auth::check());
         $response = $this->get('/task_statuses/create');
         $response->assertOk();
         $response->assertSeeTextInOrder(

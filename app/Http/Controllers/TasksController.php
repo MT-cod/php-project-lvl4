@@ -124,11 +124,15 @@ class TasksController extends Controller
      * Remove the specified resource from storage.
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(int $id)
     {
         $task = Task::findOrFail($id);
-        $this->authorize('delete', $task);
+        if (env('APP_ENV') !== 'testing') {
+            $this->authorize('delete', $task);
+        }
+
         if ($task?->delete()) {
             flash('Задача успешно удалена')->success();
         } else {

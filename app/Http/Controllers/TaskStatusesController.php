@@ -91,6 +91,7 @@ class TaskStatusesController extends Controller
      * Remove the specified resource from storage.
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(int $id)
     {

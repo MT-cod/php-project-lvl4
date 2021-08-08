@@ -97,11 +97,13 @@ class TaskStatusesController extends Controller
     {
         $taskStatus = TaskStatus::findOrFail($id);
         $this->authorize('delete', $taskStatus);
-        if ($taskStatus?->delete()) {
+        try {
+            $taskStatus->delete();
             flash('Статус успешно удалён')->success();
-        } else {
+        } catch (\Exception $e) {
             flash('Не удалось удалить статус')->error();
+        } finally {
+            return redirect()->route('task_statuses.index');
         }
-        return redirect()->route('task_statuses.index');
     }
 }

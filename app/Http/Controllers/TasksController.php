@@ -132,12 +132,13 @@ class TasksController extends Controller
         if (env('APP_ENV') !== 'testing') {
             $this->authorize('delete', $task);
         }
-
-        if ($task?->delete()) {
+        try {
+            $task->delete();
             flash('Задача успешно удалена')->success();
-        } else {
+        } catch (\Exception $e) {
             flash('Не удалось удалить задачу')->error();
+        } finally {
+            return redirect()->route('tasks.index');
         }
-        return redirect()->route('tasks.index');
     }
 }

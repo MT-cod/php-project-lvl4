@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -47,7 +48,8 @@ class TasksController extends Controller
         $this->authorize('create', $task);
         $taskStatuses = TaskStatus::orderBy('name')->get();
         $users = User::orderBy('name')->get();
-        return view('task.create', compact('task', 'taskStatuses', 'users'));
+        $labels = Label::orderBy('name')->get();
+        return view('task.create', compact('task', 'taskStatuses', 'users', 'labels'));
     }
 
     /**
@@ -66,9 +68,11 @@ class TasksController extends Controller
         $data['description'] = $request->input('description', '');
         $data['created_by_id'] = Auth::id();
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? Auth::id();
+        $labels = $request->input('labels', []);
         $task->fill($data);
         if ($task->save()) {
             flash('Задача успешно создана')->success();
+            $task->labels()->attach($labels);
         } else {
             flash('Ошибка создания задачи')->error();
         }

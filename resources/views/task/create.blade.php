@@ -66,22 +66,15 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="LABELS" class="col-md-4 col-form-label text-md-right">{{ __('Метки') }}</label>
+                                <label for="labels" class="col-md-4 col-form-label text-md-right">{{ __('Метки') }}</label>
 
-                                {{--<div class="col-md-6">
-                                    <select class="form-control" id="assigned_to_id" name="assigned_to_id">
-                                        <option selected="selected" value="">----------</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                <div class="col-md-6">
+                                    <select class="form-control" multiple name="labels[]">
+                                        @foreach ($labels as $label)
+                                            <option value="{{ $label->id }}">{{ $label->name }}</option>
                                         @endforeach
                                     </select>
-
-                                    @error('assigned_to_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>--}}
+                                </div>
                             </div>
 
                             <div class="form-group row mb-0">

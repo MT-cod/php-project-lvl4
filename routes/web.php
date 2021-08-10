@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LabelsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TasksController;
@@ -12,5 +13,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resource('task_statuses', TaskStatusesController::class);
-
+Route::resource('labels', LabelsController::class);
 Route::resource('tasks', TasksController::class);

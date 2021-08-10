@@ -41,12 +41,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function tasks_creator()
+    public function tasks_creator(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany('App\Models\Task', 'created_by_id');
     }
 
-    public function tasks_executor()
+    public function tasks_executor(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany('App\Models\Task', 'assigned_to_id');
     }

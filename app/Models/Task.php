@@ -11,18 +11,23 @@ class Task extends Model
 
     protected $fillable = ['name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'];
 
-    public function status()
+    public function status(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\TaskStatus');
     }
 
-    public function creator()
+    public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'created_by_id');
     }
 
-    public function executor()
+    public function executor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'assigned_to_id');
+    }
+
+    public function labels(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Label::class, 'task_label', 'task_id', 'label_id');
     }
 }

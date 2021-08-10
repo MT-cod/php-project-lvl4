@@ -28,7 +28,7 @@ class TaskStatusesController extends Controller
     {
         $taskStatus = new TaskStatus();
         $this->authorize('create', $taskStatus);
-        return view('task_status.create', compact('taskStatus'));
+        return view('task_status.create');
     }
 
     /**

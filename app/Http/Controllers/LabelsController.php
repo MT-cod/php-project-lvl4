@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LabelsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -21,8 +27,8 @@ class LabelsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function create()
     {
@@ -34,8 +40,9 @@ class LabelsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws AuthorizationException|ValidationException
      */
     public function store(Request $request)
     {
@@ -53,47 +60,63 @@ class LabelsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Label $label)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
-    public function edit(Label $label)
+    public function edit(int $id)
     {
-        //
+        $label = Label::findOrFail($id);
+        $this->authorize('update', $label);
+        return view('labels.edit', compact('label'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     * @throws ValidationException
      */
-    public function update(Request $request, Label $label)
+    public function update(Request $request, int $id)
     {
-        //
+        $label = Label::findOrFail($id);
+        $this->authorize('update', $label);
+        $data = $this->validate($request, ['name' => [
+            'required',
+            Rule::unique('task_statuses')->ignore($label->id)
+        ]]);
+        $label->fill($data);
+        if ($label->save()) {
+            flash('Метка успешно изменена')->success();
+        } else {
+            flash('Ошибка изменения метки')->error();
+        }
+        return redirect()->route('labels.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(Label $label)
+    public function destroy(int $id)
     {
-        //
+        $label = Label::findOrFail($id);
+        $this->authorize('delete', $label);
+        try {
+            $label->delete();
+            flash('Метка успешно удалена')->success();
+        } catch (\Exception $e) {
+            flash('Не удалось удалить метку')->error();
+        } finally {
+            return redirect()->route('labels.index');
+        }
     }
 }

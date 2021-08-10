@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class TaskStatusesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -22,7 +28,8 @@ class TaskStatusesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function create()
     {
@@ -34,9 +41,9 @@ class TaskStatusesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException|AuthorizationException
      */
     public function store(Request $request)
     {
@@ -55,7 +62,9 @@ class TaskStatusesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function edit(int $id)
     {
@@ -67,8 +76,10 @@ class TaskStatusesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     * @throws AuthorizationException|ValidationException
      */
     public function update(Request $request, int $id)
     {
@@ -90,8 +101,9 @@ class TaskStatusesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @param int $id
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function destroy(int $id)
     {

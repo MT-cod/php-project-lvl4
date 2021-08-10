@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class LabelsController extends Controller
@@ -70,7 +71,7 @@ class LabelsController extends Controller
     {
         $label = Label::findOrFail($id);
         $this->authorize('update', $label);
-        return view('labels.edit', compact('label'));
+        return view('label.edit', compact('label'));
     }
 
     /**
@@ -90,6 +91,7 @@ class LabelsController extends Controller
             'required',
             Rule::unique('task_statuses')->ignore($label->id)
         ]]);
+        $data['description'] = $request->input('description', '');
         $label->fill($data);
         if ($label->save()) {
             flash('Метка успешно изменена')->success();

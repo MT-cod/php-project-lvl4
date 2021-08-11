@@ -15,4 +15,10 @@ class Label extends Model
     {
         return $this->belongsToMany(Task::class);
     }
+
+    public function isThisLabelFromThisTask(Task $task): bool
+    {
+        $taskLabelsIds = $task->labels()->allRelatedIds()->all();
+        return in_array($this->id, $taskLabelsIds);
+    }
 }

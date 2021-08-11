@@ -88,7 +88,8 @@ class TasksController extends Controller
     public function show(int $id)
     {
         $task = Task::findOrFail($id);
-        return view('task.show', compact('task'));
+        $labels = $task->labels()->get();
+        return view('task.show', compact('task', 'labels'));
     }
 
     /**
@@ -104,7 +105,8 @@ class TasksController extends Controller
         $this->authorize('update', $task);
         $taskStatuses = TaskStatus::orderBy('name')->get();
         $users = User::orderBy('name')->get();
-        return view('task.edit', compact('task', 'taskStatuses', 'users'));
+        $labels = Label::orderBy('name')->get();
+        return view('task.edit', compact('task', 'taskStatuses', 'users', 'labels'));
     }
 
     /**
@@ -129,7 +131,9 @@ class TasksController extends Controller
         $data['description'] = $request->input('description', '');
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? $task->assigned_to_id;
         $task->fill($data);
+        $labels = $request->input('labels', []);
         if ($task->save()) {
+            $task->labels()->sync($labels);
             flash('Задача успешно изменена')->success();
         } else {
             flash('Ошибка изменения задачи')->error();

@@ -10,6 +10,11 @@
             <p>Статус: {{ $task->status->name }}</p>
             <p>Описание: {{ $task->description }}</p>
             <p>Метки:</p>
+            <ul>
+                @foreach ($labels as $label)
+                    <li>{{ $label->name }}</li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>

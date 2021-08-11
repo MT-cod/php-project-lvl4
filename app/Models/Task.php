@@ -10,6 +10,9 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'];
+    protected $casts = [
+        'status_id' => 'integer',
+    ];
 
     public function status(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

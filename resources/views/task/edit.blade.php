@@ -41,9 +41,9 @@
 
                                 <div class="col-md-6">
                                     <select class="form-control @error('status_id') is-invalid @enderror" id="status_id" name="status_id">
-                                        <option selected="selected" value="{{ $task->status->id }}">{{ $task->status->name }}</option>
+                                        <option selected="selected" value={{ $task->status->id }}>{{ $task->status->name }}</option>
                                         @foreach ($taskStatuses as $status)
-                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                            <option value={{ $status->id }}>{{ $status->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -60,9 +60,9 @@
 
                                 <div class="col-md-6">
                                     <select class="form-control" id="assigned_to_id" name="assigned_to_id">
-                                        <option selected="selected" value="{{ $task->executor->id }}">{{ $task->executor->name }}</option>
+                                        <option selected="selected" value={{ $task->executor->id }}>{{ $task->executor->name }}</option>
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            <option value={{ $user->id }}>{{ $user->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -75,9 +75,9 @@
                                     <select class="form-control" multiple name="labels[]">
                                         @foreach ($labels as $label)
                                             @if ($label->isThisLabelFromThisTask($task))
-                                                <option selected="selected" value="{{ $label->id }}">{{ $label->name }}</option>
+                                                <option selected="selected" value={{ $label->id }}>{{ $label->name }}</option>
                                             @else
-                                                <option value="{{ $label->id }}">{{ $label->name }}</option>
+                                                <option value={{ $label->id }}>{{ $label->name }}</option>
                                             @endif
                                         @endforeach
                                     </select>

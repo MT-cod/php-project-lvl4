@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\LabelsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\TaskStatusesController;
+use App\Http\Controllers\LabelsController;
 
 Route::get('/', function () {
     return view('index');

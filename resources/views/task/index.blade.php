@@ -9,11 +9,36 @@
 
             <h1 class="display-10">Задачи</h1>
 
-            @guest
-            @else
-                <a href="/tasks/create" class="btn btn-primary">Создать задачу</a>
-                <br><br>
-            @endguest
+            <div class="d-flex">
+                <div>
+                    <form method="GET" action="/tasks" accept-charset="UTF-8" class="form-inline">
+                        <select class="form-control mr-2" name="filter[status_id]">
+                            <option selected="selected" value="">Статус</option>
+                            @foreach ($taskStatuses as $status)
+                                <option value={{ $status->id }}>{{ $status->name }}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control mr-2" name="filter[created_by_id]">
+                             <option selected="selected" value="">Автор</option>
+                             @foreach ($users as $user)
+                                 <option value={{ $user->id }}>{{ $user->name }}</option>
+                             @endforeach
+                        </select>
+                        <select class="form-control mr-2" name="filter[assigned_to_id]">
+                             <option selected="selected" value="">Исполнитель</option>
+                             @foreach ($users as $user)
+                                 <option value={{ $user->id }}>{{ $user->name }}</option>
+                             @endforeach
+                        </select>
+                        <input class="btn btn-outline-primary mr-2" type="submit" value="Применить">
+                    </form>
+                </div>
+                    @guest
+                    @else
+                        <a href="/tasks/create" class="btn btn-primary">Создать задачу</a>
+                    @endguest
+            </div>
+            <br>
 
             <table class="table table-success table-striped table-sm mx-auto">
                 <thead>
@@ -34,10 +59,10 @@
                 @foreach ($tasks as $task)
                     <tr>
                         <td>{{ $task->id }}</td>
-                        <td>{{ Str::limit($task->status_name, 20) }}</td>
+                        <td>{{ Str::limit($task->status->name, 20) }}</td>
                         <td><a href="{{ route('tasks.show', $task->id) }}">{{ Str::limit($task->name, 200) }}</a></td>
-                        <td>{{ $task->creator_name }}</td>
-                        <td>{{ $task->executor_name }}</td>
+                        <td>{{ $task->creator->name }}</td>
+                        <td>{{ $task->executor->name }}</td>
                         <td>{{ $task->created_at }}</td>
                         @guest
                         @else

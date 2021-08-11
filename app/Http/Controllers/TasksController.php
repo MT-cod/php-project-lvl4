@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TasksController extends Controller
 {
@@ -25,15 +27,16 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::addSelect(['status_name' => TaskStatus::select('name')
-            ->whereColumn('id', 'tasks.status_id')
-        ])->addSelect(['creator_name' => User::select('name')
-            ->whereColumn('id', 'tasks.created_by_id')
-        ])->addSelect(['executor_name' => User::select('name')
-            ->whereColumn('id', 'tasks.assigned_to_id')
-        ])->orderByDesc('id')
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')
+            ])
             ->paginate(10);
-        return view('task.index', compact('tasks'));
+        $taskStatuses = TaskStatus::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
+        return view('task.index', compact('tasks', 'taskStatuses', 'users'));
     }
 
     /**

@@ -15,20 +15,44 @@
                         <select class="form-control mr-2" name="filter[status_id]">
                             <option selected="selected" value="">Статус</option>
                             @foreach ($taskStatuses as $status)
-                                <option value={{ $status->id }}>{{ $status->name }}</option>
+                                @if (
+                                    isset($_REQUEST['filter']['status_id']) &&
+                                    ($_REQUEST['filter']['status_id'] !== '') &&
+                                    ($status->id == $_REQUEST['filter']['status_id'])
+                                    )
+                                    <option selected="selected" value={{ $status->id }}>{{ $status->name }}</option>
+                                @else
+                                    <option value={{ $status->id }}>{{ $status->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                         <select class="form-control mr-2" name="filter[created_by_id]">
-                             <option selected="selected" value="">Автор</option>
-                             @foreach ($users as $user)
-                                 <option value={{ $user->id }}>{{ $user->name }}</option>
-                             @endforeach
+                            <option selected="selected" value="">Автор</option>
+                            @foreach ($users as $user)
+                                @if (
+                                    isset($_REQUEST['filter']['created_by_id']) &&
+                                    ($_REQUEST['filter']['created_by_id'] !== '') &&
+                                    ($user->id == $_REQUEST['filter']['created_by_id'])
+                                    )
+                                    <option selected="selected" value={{ $user->id }}>{{ $user->name }}</option>
+                                @else
+                                    <option value={{ $user->id }}>{{ $user->name }}</option>
+                                @endif
+                            @endforeach
                         </select>
                         <select class="form-control mr-2" name="filter[assigned_to_id]">
-                             <option selected="selected" value="">Исполнитель</option>
-                             @foreach ($users as $user)
-                                 <option value={{ $user->id }}>{{ $user->name }}</option>
-                             @endforeach
+                            <option selected="selected" value="">Исполнитель</option>
+                            @foreach ($users as $user)
+                                @if (
+                                    isset($_REQUEST['filter']['assigned_to_id']) &&
+                                    ($_REQUEST['filter']['assigned_to_id'] !== '') &&
+                                    ($user->id == $_REQUEST['filter']['assigned_to_id'])
+                                    )
+                                    <option selected="selected" value={{ $user->id }}>{{ $user->name }}</option>
+                                @else
+                                    <option value={{ $user->id }}>{{ $user->name }}</option>
+                                @endif
+                            @endforeach
                         </select>
                         <input class="btn btn-outline-primary mr-2" type="submit" value="Применить">
                     </form>

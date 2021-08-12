@@ -33,7 +33,8 @@ class TasksController extends Controller
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id')
             ])
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(request()->query());
         $taskStatuses = TaskStatus::orderBy('name')->get();
         $users = User::orderBy('name')->get();
         return view('task.index', compact('tasks', 'taskStatuses', 'users'));

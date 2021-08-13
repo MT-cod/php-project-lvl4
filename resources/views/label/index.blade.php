@@ -38,7 +38,7 @@
                         @guest
                         @else
                             <td>
-                                <a href="{{ route('labels.edit', $label->id) }}">Изменить</a>
+                                <a class="text-warning" href="{{ route('labels.edit', $label->id) }}">Изменить</a>
                                 <a class="text-danger" href="{{ route('labels.destroy', $label->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
                                 {{--<form action="/labels/{{ $label->id }}" method="POST">
                                     @csrf

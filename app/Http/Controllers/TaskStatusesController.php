@@ -60,6 +60,17 @@ class TaskStatusesController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function show(int $id)
+    {
+        return redirect()->route('task_statuses.index');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id

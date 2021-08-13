@@ -91,7 +91,7 @@
                         @guest
                         @else
                         <td>
-                            <a href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
+                            <a class="text-warning" href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
                             @can('delete', $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
                                 {{--<form action="/tasks/{{ $task->id }}" method="POST">

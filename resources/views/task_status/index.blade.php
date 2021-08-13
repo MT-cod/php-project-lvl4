@@ -36,8 +36,8 @@
                         @guest
                         @else
                         <td>
-                            <a href="{{ route('task_statuses.edit', $status->id) }}">Изменить</a>
-                            <a class="text-danger" href="{{ route('task_statuses.destroy', $status->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+                            <a class="text-warning" href="{{ route('task_statuses.edit', $status->id) }}">Изменить</a>
+                            <a class="text-danger" href="/task_statuses/{{ $status->id }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
                             {{--ВАРИАНТ ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЯ БУТСТРАПОМ
                             <form action="/task_statuses/{{ $status->id }}" method="POST">
                                 @csrf

@@ -35,7 +35,7 @@ class TasksController extends Controller
             ->paginate(10);
         $appendss = request()->query();
         if ($appendss !== []) {
-            $tasks->appends(request()->query());
+            $tasks->appends($appendss);
         }
 
         $taskStatuses = TaskStatus::orderBy('name')->get();

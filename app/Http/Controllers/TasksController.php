@@ -34,7 +34,7 @@ class TasksController extends Controller
             ])
             ->paginate(10);
         $appendss = request()->query();
-        if ($appendss !== []) {
+        if ($appendss != null) {
             $tasks->appends($appendss);
         }
 

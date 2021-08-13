@@ -1,5 +1,5 @@
 {
-    "name":"mt-cod-php-project-lvl4",
+    "name": "mt-cod-php-project-lvl4",
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -22,5 +22,8 @@
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1"
+    },
+    "dependencies": {
+        "@rails/ujs": "^6.1.4"
     }
 }

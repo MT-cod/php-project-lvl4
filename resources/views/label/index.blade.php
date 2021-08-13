@@ -39,12 +39,13 @@
                         @else
                             <td>
                                 <a href="{{ route('labels.edit', $label->id) }}">Изменить</a>
-                                <form action="/labels/{{ $label->id }}" method="POST">
+                                <a class="text-danger" href="{{ route('labels.destroy', $label->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+                                {{--<form action="/labels/{{ $label->id }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{ $label->id }}" name="id">
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
-                                </form>
+                                </form>--}}
                             </td>
                         @endguest
                     </tr>

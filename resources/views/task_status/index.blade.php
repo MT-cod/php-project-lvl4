@@ -37,12 +37,15 @@
                         @else
                         <td>
                             <a href="{{ route('task_statuses.edit', $status->id) }}">Изменить</a>
-                            {{--<form action="/task_statuses/{{ $status->id }}" method="POST">
+                            <a class="text-danger" href="{{ route('task_statuses.destroy', $status->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+                            {{--ВАРИАНТ ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЯ БУТСТРАПОМ
+                            <form action="/task_statuses/{{ $status->id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" value="{{ $status->id }}" name="id">
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
                             </form>--}}
+                            {{--ВАРИАНТ ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЯ Collective и JS
                             <div class="pl-1">
                                 <button type="button" name="button"
                                         onclick="if(confirm('Вы уверены?')){ $('form#delete-{{$status->id}}').submit(); }"
@@ -50,7 +53,7 @@
                                 </button>
                                 {!! Form::open(['method' => 'DELETE', 'route' => ['task_statuses.destroy',$status->id], 'class' => 'hidden', 'id'=>"delete-".$status->id]) !!}
                                 {!! Form::close() !!}
-                            </div>
+                            </div>--}}
                         </td>
                         @endguest
                     </tr>

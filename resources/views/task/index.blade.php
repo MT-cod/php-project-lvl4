@@ -93,13 +93,14 @@
                         <td>
                             <a href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
                             @can('delete', $task)
-                                <form action="/tasks/{{ $task->id }}" method="POST">
+                                <a class="text-danger" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
+                                {{--<form action="/tasks/{{ $task->id }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{ $task->id }}" name="id">
 
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
-                                </form>
+                                </form>--}}
                             @endcan
                         </td>
                         @endguest

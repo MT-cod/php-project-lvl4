@@ -74,9 +74,9 @@ class TasksController extends Controller
                 if (Task::where($attribute, $value)->first() !== null) {
                     $fail('Задача с таким именем уже существует');
                 }
-            },
-            'status_id' => 'required'
-        ]]);
+            }
+        ],
+            'status_id' => 'required']);
         $data['description'] = $request->input('description', '');
         $data['created_by_id'] = Auth::id();
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? Auth::id();
@@ -139,9 +139,9 @@ class TasksController extends Controller
                 if ((Task::where($attribute, $value)->first() !== null) && ($value !== $task->name)) {
                     $fail('Задача с таким именем уже существует');
                 }
-            },
-            'status_id' => 'required'
-        ]]);
+            }
+        ],
+            'status_id' => 'required']);
         $data['description'] = $request->input('description', '');
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? $task->assigned_to_id;
         $task->fill($data);

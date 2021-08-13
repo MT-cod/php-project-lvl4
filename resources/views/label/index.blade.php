@@ -43,7 +43,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{ $label->id }}" name="id">
-                                    <button type="submit">Удалить</button>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
                                 </form>
                             </td>
                         @endguest

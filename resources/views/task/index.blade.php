@@ -97,7 +97,8 @@
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{ $task->id }}" name="id">
-                                    <button type="submit">Удалить</button>
+
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
                                 </form>
                             @endcan
                         </td>

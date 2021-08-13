@@ -49,7 +49,14 @@ class LabelsController extends Controller
     {
         $label = new Label();
         $this->authorize('create', $label);
-        $data = $this->validate($request, ['name' => 'required|unique:labels']);
+        $data = $this->validate($request, ['name' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                if (Label::where($attribute, $value)->first() !== null) {
+                    $fail('Метка с таким именем уже существует');
+                }
+            }
+        ]]);
         $data['description'] = $request->input('description', '');
         $label->fill($data);
         if ($label->save()) {
@@ -89,8 +96,12 @@ class LabelsController extends Controller
         $this->authorize('update', $label);
         $data = $this->validate($request, ['name' => [
             'required',
-            Rule::unique('task_statuses')->ignore($label->id)
-        ]]);
+            function ($attribute, $value, $fail) use ($label) {
+                if ((Label::where($attribute, $value)->first() !== null) && ($value !== $label->name)) {
+                    $fail('Метка с таким именем уже существует');
+                }
+            }
+            ]]);
         $data['description'] = $request->input('description', '');
         $label->fill($data);
         if ($label->save()) {

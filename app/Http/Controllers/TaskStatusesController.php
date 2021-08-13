@@ -49,7 +49,14 @@ class TaskStatusesController extends Controller
     {
         $taskStatus = new TaskStatus();
         $this->authorize('create', $taskStatus);
-        $data = $this->validate($request, ['name' => 'required|unique:task_statuses']);
+        $data = $this->validate($request, ['name' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                if (TaskStatus::where($attribute, $value)->first() !== null) {
+                    $fail('Статус с таким именем уже существует');
+                }
+            }
+            ]]);
         $taskStatus->fill($data);
         if ($taskStatus->save()) {
             flash('Статус успешно создан')->success();
@@ -98,7 +105,11 @@ class TaskStatusesController extends Controller
         $this->authorize('update', $taskStatus);
         $data = $this->validate($request, ['name' => [
             'required',
-            Rule::unique('task_statuses')->ignore($taskStatus->id)
+            function ($attribute, $value, $fail) use ($taskStatus) {
+                if ((TaskStatus::where($attribute, $value)->first() !== null) && ($value !== $taskStatus->name)) {
+                    $fail('Статус с таким именем уже существует');
+                }
+            }
         ]]);
         $taskStatus->fill($data);
         if ($taskStatus->save()) {

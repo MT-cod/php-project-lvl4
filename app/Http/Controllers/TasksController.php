@@ -68,7 +68,15 @@ class TasksController extends Controller
     {
         $task = new Task();
         $this->authorize('create', $task);
-        $data = $this->validate($request, ['name' => 'required|unique:tasks', 'status_id' => 'required']);
+        $data = $this->validate($request, ['name' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                if (Task::where($attribute, $value)->first() !== null) {
+                    $fail('Задача с таким именем уже существует');
+                }
+            },
+            'status_id' => 'required'
+        ]]);
         $data['description'] = $request->input('description', '');
         $data['created_by_id'] = Auth::id();
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? Auth::id();
@@ -125,13 +133,15 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         $this->authorize('update', $task);
-        $data = $this->validate($request, [
-            'name' => [
-                'required',
-                Rule::unique('tasks')->ignore($task->id)
-            ],
+        $data = $this->validate($request, ['name' => [
+            'required',
+            function ($attribute, $value, $fail) use ($task) {
+                if ((Task::where($attribute, $value)->first() !== null) && ($value !== $task->name)) {
+                    $fail('Задача с таким именем уже существует');
+                }
+            },
             'status_id' => 'required'
-        ]);
+        ]]);
         $data['description'] = $request->input('description', '');
         $data['assigned_to_id'] = $request->input('assigned_to_id') ?? $task->assigned_to_id;
         $task->fill($data);

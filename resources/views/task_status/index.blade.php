@@ -32,7 +32,7 @@
                     <tr>
                         <td>{{ $status->id }}</td>
                         <td>{{ Str::limit($status->name, 200) }}</td>
-                        <td>{{ $status->created_at }}</td>
+                        <td>{{ $status->created_at->format('d.m.Y') }}</td>
                         @guest
                         @else
                         <td>

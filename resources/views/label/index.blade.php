@@ -34,18 +34,12 @@
                         <td>{{ $label->id }}</td>
                         <td>{{ Str::limit($label->name, 20) }}</td>
                         <td>{{ Str::limit($label->description, 200) }}</td>
-                        <td>{{ $label->created_at }}</td>
+                        <td>{{ $label->created_at->format('d.m.Y') }}</td>
                         @guest
                         @else
                             <td>
                                 <a class="text-warning" href="{{ route('labels.edit', $label->id) }}">Изменить</a>
                                 <a class="text-danger" href="{{ route('labels.destroy', $label->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
-                                {{--<form action="/labels/{{ $label->id }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" value="{{ $label->id }}" name="id">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
-                                </form>--}}
                             </td>
                         @endguest
                     </tr>

@@ -87,20 +87,13 @@
                         <td><a href="{{ route('tasks.show', $task->id) }}">{{ Str::limit($task->name, 200) }}</a></td>
                         <td>{{ $task->creator->name }}</td>
                         <td>{{ $task->executor->name }}</td>
-                        <td>{{ $task->created_at }}</td>
+                        <td>{{ $task->created_at->format('d.m.Y') }}</td>
                         @guest
                         @else
                         <td>
                             <a class="text-warning" href="{{ route('tasks.edit', $task->id) }}">Изменить</a>
                             @can('delete', $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
-                                {{--<form action="/tasks/{{ $task->id }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" value="{{ $task->id }}" name="id">
-
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
-                                </form>--}}
                             @endcan
                         </td>
                         @endguest

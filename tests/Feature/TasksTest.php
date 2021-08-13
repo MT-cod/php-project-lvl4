@@ -114,7 +114,7 @@ class TasksTest extends TestCase
         Auth::loginUsingId(1);
         $this->storeTestTask();
         $task = Task::firstWhere('name', $this->testTaskName);
-        if ($task) {
+        if (!is_null($task)) {
             $this->post(route('tasks.destroy', $task->id), ['_method' => 'DELETE']);
             $this->assertDeleted($task);
             $this->assertDatabaseMissing('tasks', ['name' => $this->testTaskName]);

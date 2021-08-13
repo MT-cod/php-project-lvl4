@@ -19,6 +19,6 @@ class Label extends Model
     public function isThisLabelFromThisTask(Task $task): bool
     {
         $taskLabelsIds = $task->labels()->allRelatedIds()->all();
-        return in_array($this->id, $taskLabelsIds, false);
+        return in_array($this->id, $taskLabelsIds, true);
     }
 }

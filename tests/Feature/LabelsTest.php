@@ -86,7 +86,7 @@ class LabelsTest extends TestCase
         $this->assertDatabaseHas('labels', ['name' => $this->testLabelName]);
         $label = Label::firstWhere('name', $this->testLabelName);
         Auth::logout();
-        if ($label) {
+        if (!is_null($label)) {
             $response = $this->post(route('labels.destroy', $label->id), ['_method' => 'DELETE']);
             $response->assertStatus(403);
             Auth::loginUsingId(1);

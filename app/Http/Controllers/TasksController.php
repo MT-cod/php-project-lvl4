@@ -33,8 +33,8 @@ class TasksController extends Controller
                 AllowedFilter::exact('assigned_to_id')
             ])
             ->paginate(10);
-        $appends = request()->query();
-        if ($appends !== []) {
+        $appendss = request()->query();
+        if ($appendss !== []) {
             $tasks->appends(request()->query());
         }
 

@@ -86,14 +86,16 @@ class LabelsTest extends TestCase
         $this->assertDatabaseHas('labels', ['name' => $this->testLabelName]);
         $label = Label::firstWhere('name', $this->testLabelName);
         Auth::logout();
-        $response = $this->post(route('labels.destroy', $label->id), ['_method' => 'DELETE']);
-        $response->assertStatus(403);
-        Auth::loginUsingId(1);
-        $this->post(route('labels.destroy', $label->id), ['_method' => 'DELETE']);
-        $this->assertDeleted($label);
-        $this->assertDatabaseMissing('labels', ['name' => $this->testLabelName]);
-        $response = $this->get('/labels');
-        $response->assertSeeTextInOrder(['Метка успешно удалена'], true);
+        if ($label) {
+            $response = $this->post(route('labels.destroy', $label->id), ['_method' => 'DELETE']);
+            $response->assertStatus(403);
+            Auth::loginUsingId(1);
+            $this->post(route('labels.destroy', $label->id), ['_method' => 'DELETE']);
+            $this->assertDeleted($label);
+            $this->assertDatabaseMissing('labels', ['name' => $this->testLabelName]);
+            $response = $this->get('/labels');
+            $response->assertSeeTextInOrder(['Метка успешно удалена'], true);
+        }
     }
 
     protected function tearDown(): void

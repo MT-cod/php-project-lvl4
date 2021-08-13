@@ -50,7 +50,7 @@ class TaskStatusesController extends Controller
         $this->authorize('create', $taskStatus);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) {
+            function ($attribute, $value, $fail): void {
                 if (TaskStatus::where($attribute, $value)->first() !== null) {
                     $fail('Статус с таким именем уже существует');
                 }
@@ -104,7 +104,7 @@ class TaskStatusesController extends Controller
         $this->authorize('update', $taskStatus);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) use ($taskStatus) {
+            function ($attribute, $value, $fail) use ($taskStatus): void {
                 if ((TaskStatus::where($attribute, $value)->first() !== null) && ($value !== $taskStatus->name)) {
                     $fail('Статус с таким именем уже существует');
                 }

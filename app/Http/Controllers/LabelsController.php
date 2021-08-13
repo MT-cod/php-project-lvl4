@@ -50,7 +50,7 @@ class LabelsController extends Controller
         $this->authorize('create', $label);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) {
+            function ($attribute, $value, $fail): void {
                 if (Label::where($attribute, $value)->first() !== null) {
                     $fail('Метка с таким именем уже существует');
                 }
@@ -95,7 +95,7 @@ class LabelsController extends Controller
         $this->authorize('update', $label);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) use ($label) {
+            function ($attribute, $value, $fail) use ($label): void {
                 if ((Label::where($attribute, $value)->first() !== null) && ($value !== $label->name)) {
                     $fail('Метка с таким именем уже существует');
                 }

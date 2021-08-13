@@ -69,7 +69,7 @@ class TasksController extends Controller
         $this->authorize('create', $task);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) {
+            function ($attribute, $value, $fail): void {
                 if (Task::where($attribute, $value)->first() !== null) {
                     $fail('Задача с таким именем уже существует');
                 }
@@ -134,7 +134,7 @@ class TasksController extends Controller
         $this->authorize('update', $task);
         $data = $this->validate($request, ['name' => [
             'required',
-            function ($attribute, $value, $fail) use ($task) {
+            function ($attribute, $value, $fail) use ($task): void {
                 if ((Task::where($attribute, $value)->first() !== null) && ($value !== $task->name)) {
                     $fail('Задача с таким именем уже существует');
                 }

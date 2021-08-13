@@ -86,14 +86,16 @@ class TaskStatusesTest extends TestCase
         $this->assertDatabaseHas('task_statuses', ['name' => $this->testStatusName]);
         $status = TaskStatus::firstWhere('name', $this->testStatusName);
         Auth::logout();
-        $response = $this->post(route('task_statuses.destroy', $status->id), ['_method' => 'DELETE']);
-        $response->assertStatus(403);
-        Auth::loginUsingId(1);
-        $this->post(route('task_statuses.destroy', $status->id), ['_method' => 'DELETE']);
-        $this->assertDeleted($status);
-        $this->assertDatabaseMissing('task_statuses', ['name' => $this->testStatusName]);
-        $response = $this->get('/task_statuses');
-        $response->assertSeeTextInOrder(['Статус успешно удалён'], true);
+        if ($status) {
+            $response = $this->post(route('task_statuses.destroy', $status->id), ['_method' => 'DELETE']);
+            $response->assertStatus(403);
+            Auth::loginUsingId(1);
+            $this->post(route('task_statuses.destroy', $status->id), ['_method' => 'DELETE']);
+            $this->assertDeleted($status);
+            $this->assertDatabaseMissing('task_statuses', ['name' => $this->testStatusName]);
+            $response = $this->get('/task_statuses');
+            $response->assertSeeTextInOrder(['Статус успешно удалён'], true);
+        }
     }
 
     protected function tearDown(): void

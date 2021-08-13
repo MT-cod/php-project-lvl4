@@ -114,11 +114,13 @@ class TasksTest extends TestCase
         Auth::loginUsingId(1);
         $this->storeTestTask();
         $task = Task::firstWhere('name', $this->testTaskName);
-        $this->post(route('tasks.destroy', $task->id), ['_method' => 'DELETE']);
-        $this->assertDeleted($task);
-        $this->assertDatabaseMissing('tasks', ['name' => $this->testTaskName]);
-        $response = $this->get('/tasks');
-        $response->assertSeeTextInOrder(['Задача успешно удалена'], true);
+        if ($task) {
+            $this->post(route('tasks.destroy', $task->id), ['_method' => 'DELETE']);
+            $this->assertDeleted($task);
+            $this->assertDatabaseMissing('tasks', ['name' => $this->testTaskName]);
+            $response = $this->get('/tasks');
+            $response->assertSeeTextInOrder(['Задача успешно удалена'], true);
+        }
     }
 
     private function storeTestTask(): \Illuminate\Testing\TestResponse

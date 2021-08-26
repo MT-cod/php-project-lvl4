@@ -28,5 +28,5 @@
 ## Готовый docker-образ с проектом:
 <a href="https://hub.docker.com/r/mtcod/php-project-lvl4">mtcod/php-project-lvl4</a>
 
-######Пример загрузки и запуска контейнера проекта:
-docker run -p 80:8000 -d mtcod/php-project-lvl4 php /srv/php-project-lvl4/artisan serve --host 0.0.0.0
+###### Пример загрузки и запуска контейнера проекта:
+<code>docker run -p 80:8000 -d mtcod/php-project-lvl4 php /srv/php-project-lvl4/artisan serve --host 0.0.0.0</code>

@@ -23,7 +23,7 @@
 <p>Менеджер задач – система управления задачами, подобная <a href="http://www.redmine.org/" target="_blank">http://www.redmine.org/</a>. Она позволяет ставить задачи, назначать исполнителей и менять их статусы. Для работы с системой требуется регистрация и аутентификация.</p>
 
 ## Развёрнутый проект на Heroku:
-<a href="https://mt-cod-php-project-lvl4.herokuapp.com/">mt-cod-php-project-lvl4.herokuapp.com</a>
+<a href="http://mt-cod-php-project-lvl4.herokuapp.com/">mt-cod-php-project-lvl4.herokuapp.com</a>
 
 ## Готовый docker-образ с проектом:
 <a href="https://hub.docker.com/r/mtcod/php-project-lvl4">mtcod/php-project-lvl4</a>
